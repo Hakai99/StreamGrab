@@ -31,7 +31,7 @@ streamgrab
 Then paste a URL into the **Video** or **Audio** tab, click **Fetch**, pick a quality, choose a save folder, and click **Download**.
 
 ## StreamGrab UI
-<img src="SteamGrabDemo.png" alt="StreamGrab UI" height= "480" width="854"/>
+<img src="SteamGrabDemo.png" alt="StreamGrab UI" height= "550" width="854"/>
 
 ## Features
 
