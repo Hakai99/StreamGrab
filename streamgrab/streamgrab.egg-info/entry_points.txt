@@ -1,0 +1,2 @@
+[console_scripts]
+streamgrab = streamgrab.app:main

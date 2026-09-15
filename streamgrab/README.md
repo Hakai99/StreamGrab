@@ -1,0 +1,83 @@
+# StreamGrab
+
+A desktop app for downloading video and audio from YouTube, Instagram,
+Facebook, and 1000+ other sites supported by `yt-dlp` — with two fully
+independent tabs (Video/MP4 and Audio/MP3), each with its own URL box,
+so a paste in one never conflicts with the other, plus a live progress
+bar and automatic playlist/mix safety so a single-video link never
+accidentally triggers a slow whole-playlist fetch.
+
+## Install
+
+```bash
+pip install -e .
+```
+
+**ffmpeg is installed automatically** — no separate download or PATH
+setup required. This package depends on `imageio-ffmpeg`, which ships
+a real ffmpeg binary for Windows/Mac/Linux and installs it as a normal
+part of `pip install`. If a system-wide ffmpeg is also present on your
+PATH, that one is used instead (so your own ffmpeg install, if you
+have one, still takes priority); the bundled copy is only a fallback.
+
+## Run
+
+```bash
+streamgrab
+```
+
+Two independent tabs:
+- **🎬 Video (MP4)** — its own URL box, Fetch button, and resolution list.
+- **🎵 Audio (MP3)** — its own URL box, Fetch button, and quality list.
+
+Paste a URL into whichever tab matches what you want, click **Fetch**,
+pick a quality, choose a save folder, and click **Download**. The two
+tabs never share state, so you can look up a video in one tab without
+affecting anything you've already fetched in the other.
+
+## Important: legal use
+
+`yt-dlp` (the engine this app is built on) is a legitimate, widely used
+open-source tool. However, many platforms' Terms of Service restrict or
+prohibit downloading video content except through their own official
+tools. This app does not bypass any DRM or paywalled content — it only
+works on publicly accessible media the same way `yt-dlp` itself does.
+You are responsible for using this tool in accordance with the terms
+of service of whatever site you use it on, and applicable copyright law
+in your country. This tool is intended for personal use cases such as
+archiving your own content or content you have the right to download.
+
+## What has actually been tested
+
+- Filename sanitization and format-label/sorting logic: unit tested.
+- **ffmpeg resolution logic**: directly tested for all three real
+  scenarios — system ffmpeg present (preferred), system ffmpeg absent
+  but the bundled `imageio-ffmpeg` binary available (used as fallback),
+  and neither available (raises a clear error rather than a raw crash).
+- **The playlist/mix hang that caused a real reported issue**: fixed
+  with `noplaylist` + `playlist_items='1'`, plus a normalization step
+  that resolves to a single video's info even if a site still returns
+  a playlist-shaped response. All of this is unit tested directly
+  against realistic response shapes (single video, playlist-shaped
+  with entries, empty playlist).
+- **A hard 45-second timeout** wraps every metadata fetch, independent
+  of yt-dlp's own network timeout, so a stuck extractor can no longer
+  leave the "Fetching..." UI state stuck indefinitely — verified by
+  forcing an artificial hang and confirming it times out with a clear
+  message instead of hanging forever.
+- The GUI: verified to build, show, and wire up all controls correctly
+  — including confirming the two tabs' URL inputs are genuinely
+  separate objects with no shared state, and that a missing-ffmpeg
+  scenario disables only the Audio tab, leaving Video unaffected.
+- **The live download against a real video has NOT been verified in the
+  environment this was built in**, because that sandbox blocks outbound
+  network access to video platforms by policy. The `yt-dlp` calls
+  themselves follow yt-dlp's standard, documented API usage, and the
+  fixes above address the specific real failures reported so far, but
+  you should still do a real test on your own machine — paste a URL in
+  each tab, fetch, and download — before relying on this for anything
+  important.
+
+## License
+
+MIT

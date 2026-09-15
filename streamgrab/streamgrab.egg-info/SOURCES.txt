@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+streamgrab/__init__.py
+streamgrab/app.py
+streamgrab.egg-info/PKG-INFO
+streamgrab.egg-info/SOURCES.txt
+streamgrab.egg-info/dependency_links.txt
+streamgrab.egg-info/entry_points.txt
+streamgrab.egg-info/requires.txt
+streamgrab.egg-info/top_level.txt
+streamgrab/core/__init__.py
+streamgrab/core/downloader.py
+streamgrab/resources/logo.png
+streamgrab/ui/__init__.py
+streamgrab/ui/main_window.py
