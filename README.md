@@ -30,18 +30,67 @@ streamgrab
 
 Then paste a URL into the **Video** or **Audio** tab, click **Fetch**, pick a quality, choose a save folder, and click **Download**.
 
+## Troubleshooting
+
+### `ModuleNotFoundError: No module named 'streamgrab'`
+
+If running:
+
+```bash
+streamgrab
+```
+
+produces an error such as:
+
+```text
+ModuleNotFoundError: No module named 'streamgrab'
+```
+
+this may be caused by an old or broken **editable installation** of StreamGrab pointing to a project folder that no longer exists.
+
+You can fix it by removing the old installation and reinstalling StreamGrab normally:
+
+```bash
+python -m pip uninstall -y streamgrab
+python -m pip install --no-cache-dir streamgrab
+```
+
+Then run:
+
+```bash
+streamgrab
+```
+
+### Why does this happen?
+
+An editable installation can point Python to a local development directory, for example:
+
+```text
+E:\streamgrab
+```
+
+If that directory is later moved, renamed, or deleted, the `streamgrab` command may still exist while Python can no longer find the actual package.
+
+A normal PyPI installation does not require the original development directory to remain on the computer.
+
+> **For normal users:** use `pip install streamgrab`.
+> **For developers:** use `pip install -e .` only when working from a local StreamGrab source checkout.
+
+---
+
 ## StreamGrab UI
-<img src="SteamGrabDemo.png" alt="StreamGrab UI" height= "580" width="854"/>
+
+<img src="SteamGrabDemo.png" alt="StreamGrab UI" height="580" width="854"/>
 
 ## Features
 
-- **Two fully independent tabs** — 🎬 Video (MP4) and 🎵 Audio (MP3) — each with its own URL box, Fetch button, and quality selector. Pasting a URL in one tab never affects the other.
-- **Live progress bar** updates in real time during download so you always know how far along it is.
-- **Automatic ffmpeg bundling** — no separate download or PATH setup needed. StreamGrab depends on `imageio-ffmpeg`, which ships a real ffmpeg binary for Windows, macOS, and Linux. If you already have a system-wide ffmpeg on your PATH, that one takes priority; the bundled copy is only a fallback.
-- **Playlist / mix safety** — a single-video URL never accidentally triggers a slow whole-playlist fetch. StreamGrab forces single-item mode and normalises yt-dlp responses so only the one video you asked for is fetched.
-- **Hard 45-second fetch timeout** — a stuck yt-dlp extractor can no longer freeze the UI indefinitely. If metadata takes too long, you get a clear error message instead of an endless "Fetching…" spinner.
-- **1000+ supported sites** via yt-dlp — YouTube, Instagram, Facebook, Twitter/X, Vimeo, SoundCloud, and many more.
-- **Dark, modern UI** — clean tab layout, status bar, and per-tab error/progress state that stays local to each tab.
+* **Two fully independent tabs** — 🎬 Video (MP4) and 🎵 Audio (MP3) — each with its own URL box, Fetch button, and quality selector. Pasting a URL in one tab never affects the other.
+* **Live progress bar** updates in real time during download so you always know how far along it is.
+* **Automatic ffmpeg bundling** — no separate download or PATH setup needed. StreamGrab depends on `imageio-ffmpeg`, which ships a real ffmpeg binary for Windows, macOS, and Linux. If you already have a system-wide ffmpeg on your PATH, that one takes priority; the bundled copy is only a fallback.
+* **Playlist / mix safety** — a single-video URL never accidentally triggers a slow whole-playlist fetch. StreamGrab forces single-item mode and normalises yt-dlp responses so only the one video you asked for is fetched.
+* **Hard 45-second fetch timeout** — a stuck yt-dlp extractor can no longer freeze the UI indefinitely. If metadata takes too long, you get a clear error message instead of an endless "Fetching…" spinner.
+* **1000+ supported sites** via yt-dlp — YouTube, Instagram, Facebook, Twitter/X, Vimeo, SoundCloud, and many more.
+* **Dark, modern UI** — clean tab layout, status bar, and per-tab error/progress state that stays local to each tab.
 
 ## Important: legal use
 
@@ -67,6 +116,7 @@ No Python install needed for the person running the app — just build once and 
    ```
 
 2. This installs PyInstaller if needed and builds using `StreamGrab.spec`.
+
 3. When it finishes, your executable is at `dist\StreamGrab.exe`. Copy that single file anywhere — it runs standalone, no terminal, no `pip install` required on the target machine.
 
 > **Note:** PyInstaller builds are platform-specific — build on Windows to get a Windows `.exe`; the same steps on macOS/Linux would produce a Mac/Linux binary instead.
@@ -75,7 +125,7 @@ No Python install needed for the person running the app — just build once and 
 
 This project is licensed under the [MIT License](LICENSE).
 
-```
+```text
 MIT License
 
 Copyright (c) 2026 StreamGrab contributors
